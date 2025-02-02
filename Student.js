@@ -57,7 +57,7 @@ class Student {
    * RETURNS:   The student specialization (String)
    */
   getSpecialization() {
-    return this.#specialization; 
+    return this.#specialization;
   }
 
   /**

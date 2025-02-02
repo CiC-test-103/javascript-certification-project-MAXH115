@@ -28,7 +28,7 @@ describe('LinkedList System Tests', () => {
 
   test('Finding a student by email', () => {
     const students = createMockStudents();
-    
+
     students.forEach(student => linkedList.addStudent(student));
 
     const foundStudent = linkedList.findStudent('bob@example.com');
@@ -61,7 +61,7 @@ describe('LinkedList System Tests', () => {
     expect(filtered.length).toBe(2);
     expect(filtered.map(student => student.getName())).toEqual(['AliceJohnson', 'CharlieBrown']);
   });
-  
+
 
   test('Saving and loading from JSON', async () => {
     const fs = require('fs/promises');

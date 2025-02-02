@@ -44,12 +44,16 @@ async function handleCommand(command) {
        *   - Grab the args (code is given)
        *   - Use implemented functions in LinkedList to add the Student, and display the updated LinkedList
        */
-        console.log('Adding student...')
-        const [name, year, email, specialization] = args
-        // --------> WRITE YOUR CODE BELOW
+      console.log('Adding student...')
+      const [name, year, email, specialization] = args
+      // --------> WRITE YOUR CODE BELOW
+      const student = new Student(name, parseInt(year), email, specialization);
+      studentManagementSystem.addStudent(student);
+      console.log(`Student ${student.getString()} added!`);
+      console.log(`All student info: ${studentManagementSystem.displayStudentsAll()} `);
 
-        // --------> WRITE YOUR CODE ABOVE
-        break;
+      // --------> WRITE YOUR CODE ABOVE
+      break;
 
     case 'remove':
       /**
@@ -60,9 +64,12 @@ async function handleCommand(command) {
        *   - Grab the args (removeEmail)
        *   - Use implemented functions in LinkedList to remove the Student, and display the updated LinkedList
        */
-      console.log('Removing student...')
+      console.log('Removing student...');
       // --------> WRITE YOUR CODE BELOW
-      
+      const removeEmail = args[0]
+      studentManagementSystem.removeStudent(removeEmail);
+      console.log('Student removed!');
+      console.log(`All student info: ${studentManagementSystem.displayStudentsAll()} `);
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -75,9 +82,10 @@ async function handleCommand(command) {
        */
       console.log('Displaying students...')
       // --------> WRITE YOUR CODE BELOW
-
+      console.log(studentManagementSystem.displayStudentsAll());
       // --------> WRITE YOUR CODE ABOVE
       break;
+
 
     case 'find':
       /**
@@ -91,7 +99,15 @@ async function handleCommand(command) {
        */
       console.log('Finding student...')
       // --------> WRITE YOUR CODE BELOW
-      
+      const findEmail = args[0]
+      console.log(`findEmail is ${findEmail}`);
+      const foundStudent = studentManagementSystem.findStudent(findEmail);
+      if (foundStudent) {
+        console.log(foundStudent.getString());
+      } else {
+        console.log('Student does not exist');
+      }
+
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -106,8 +122,11 @@ async function handleCommand(command) {
        */
       console.log('Saving data...')
       // --------> WRITE YOUR CODE BELOW
-
+      const saveFileName = args[0]
+      await studentManagementSystem.saveToJson(saveFileName);
+      console.log(`Data saved to ${saveFileName}`)
       // --------> WRITE YOUR CODE ABOVE
+      break;
 
     case "load":
       /**
@@ -120,6 +139,8 @@ async function handleCommand(command) {
        */
       console.log('Loading data...')
       // --------> WRITE YOUR CODE BELOW
+      await studentManagementSystem.loadFromJSON('data.json');
+      console.log(studentManagementSystem.displayStudentsAll());
 
       // --------> WRITE YOUR CODE ABOVE
       break;
@@ -134,18 +155,19 @@ async function handleCommand(command) {
        */
       console.log('Clearing data...')
       // --------> WRITE YOUR CODE BELOW
-
+      studentManagementSystem.clearStudents();
+      console.log('Data cleared!');
       // --------> WRITE YOUR CODE ABOVE
       break;
 
     case 'q':
-        console.log('Exiting...');
-        rl.close();
-        break;
+      console.log('Exiting...');
+      rl.close();
+      break;
 
     default:
-        console.log('Unknown command. Type "help" for a list of commands.');
-        break;
+      console.log('Unknown command. Type "help" for a list of commands.');
+      break;
   }
 }
 
@@ -156,7 +178,7 @@ rl.on('line', async (input) => {
   if (input.trim().toLowerCase() === 'help') {
     main();
   } else {
-      await handleCommand(input);
+    await handleCommand(input);
   }
 });
 rl.on('close', () => {
